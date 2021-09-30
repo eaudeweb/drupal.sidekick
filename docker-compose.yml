@@ -49,6 +49,18 @@ services:
 #  tomcat7:
 #    image: tomcat:7-jre8
 #    container_name: tomcat7
+#    container_name: host.tomcat7
+#    volumes:
+##       - ./tomcat7-webapps:/usr/local/tomcat/webapps
+### eHolcim specific
+##       - /home/cristiroma/Work/holcim/pdf-service/target/pdf-service.war:/usr/local/tomcat/webapps/pdf-service.war
+##       - /home/cristiroma/Work/holcim/pdf-service/util/mysql-connector-java-5.1.29-bin.jar:/usr/local/tomcat/lib/mysql-connector-java-5.1.29-bin.jar
+##       - /home/cristiroma/Work/holcim/eholcim/web/sites/default/files/private/cert-trusted:/eholcim-cert-trusted
+##       - /home/cristiroma/Work/holcim/eholcim/web/sites/default/files/private/secure-store/cert-new:/eholcim-secure-store-cert-new
+##       - /home/cristiroma/Work/holcim/eholcim/web/sites/default/files/private/secure-store/temp:/eholcim-secure-store-temp
+##       - /home/cristiroma/Work/holcim/eholcim/web/sites/default/files/private/pdf-templates:/eholcim-pdf-templates
+#     ports:
+#       - "0.0.0.0:8888:8080"
 
 # Varnish
  
