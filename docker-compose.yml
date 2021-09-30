@@ -3,7 +3,7 @@ version: '3.3'
 services:
 
 
-# Email service and webmail
+### Email service and webmail
 
   mailhog:
     image: mailhog/mailhog
@@ -13,7 +13,7 @@ services:
       - 25:1025
       - 8025:8025
 
-# Apache Solr servers
+### Apache Solr servers
 
 #  solr6:
 #    image: library/solr:6
@@ -44,7 +44,7 @@ services:
     ports:
       - 8985:8983
 
-# Tomcat servers
+### Tomcat servers
 
 #  tomcat7:
 #    image: tomcat:7-jre8
@@ -62,15 +62,20 @@ services:
 #     ports:
 #       - "0.0.0.0:8888:8080"
 
-# Varnish
+### Varnish
  
 #  varnish:
 #    image: million12/varnish
 #    volumes:
 #       - ./varnish/secret:/etc/varnish/secret
 #       - ./varnish/drupal8.vcl:/etc/varnish/default.vcl
+#    ports:
+#      - "0.0.0.0:6081:6081"
+## Management port
+#      - "0.0.0.0:6082:6082"
 
-# SQL servers
+
+### SQL servers
 
 #  mariadb:
 #    image: library/mariadb:10.5
