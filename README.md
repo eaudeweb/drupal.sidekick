@@ -45,9 +45,28 @@ To keep things simple, you can enable or disable services by directly editing th
 **Note:** Editing this file is not ideal, but currently cannot disable services from `docker-compose.override.yml`. There is support for profiles in the near future: https://docs.docker.com/compose/profiles/ which means you don't need to edit the file, but use the override file to customize the existing services.
 
 
-## FAQ
 
-### 1. How to create a new Solr core
+Currently the stack provides the following services listed below, enabled by default:
+
+
+### MailHog
+
+The mailHog service is replacing the default Linux MTA (email server): `Postfix` or `Sendmail`, therefore it will run locally on port 25. It also provides an Webmail UI available at http://localhost:8025.
+
+In order for the service to start properly you need to disable any existing services listening on TCP/IP port `25`:
+
+```bash
+systemctl stop sendmail
+systemctl disable sendmail
+systemctl stop postfix
+systemctl disable postfix
+```
+
+### Solr 7 & 8
+
+These services are listening on local TCP/IP ports `8983` and `8984`. Make sure there is no conflict with other services. Below are instructions how to manage Solr cores.
+
+###### ow to create a new Solr core
 
 See below commands to create a new core. Replace `NEWCORENAME` with the actual name
 
@@ -63,6 +82,10 @@ unzip solr_7.x_config.zip
 sudo chown -R 8983:8983 /opt/host.containers/solr/7/cores/NEWCORENAME
 docker-compose restart solr7
 ```
+
+
+## FAQ
+
 
 ### 2. How to see docker logs
 
