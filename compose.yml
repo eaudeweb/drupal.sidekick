@@ -1,0 +1,140 @@
+services:
+  
+  # Development SMTP server with webmail
+  # Email interface accessible via http://localhost:8025
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    restart: unless-stopped
+    ports:
+      # Set to port 25 replaces local sendmail (and avoid spamming people)
+      - 25:1025
+      - 8025:8025
+    networks:
+      customnetwork:
+        ipv4_address: 192.168.10.3
+
+# Full-text search solr 8 server
+# version 8 is the latest supported by Drupal
+# see https://www.drupal.org/project/search_api_solr
+  solr8:
+    image: library/solr:8
+    container_name: solr8
+    restart: unless-stopped
+    profiles:
+      - all
+      - solr
+    volumes:
+      - ./data/solr/8/cores:/var/solr/data
+    ports:
+      - 8983:8983
+    environment:
+      SOLR_JAVA_MEM: "-Xms512m -Xmx3g"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      customnetwork:
+        ipv4_address: 192.168.10.5
+
+
+  ## Optional services
+  ## Use --profile to launch
+
+  # Full-text search solr 7 server
+  # For older Drupal projects
+  solr7:
+    image: library/solr:7
+    container_name: solr7
+    restart: unless-stopped
+    profiles:
+      - all
+      - solr
+    volumes:
+      - ./data/solr/7/cores:/opt/solr/server/solr/cores
+      - ./data/solr/7/home:/home/solr
+    ports:
+      - 8984:8983
+    environment:
+      SOLR_JAVA_MEM: "-Xms512m -Xmx2g"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      customnetwork:
+        ipv4_address: 192.168.10.4
+
+  # MariaDB SQL server
+  # Features disk stored in RAM to speed-up everything
+  # WARNING: All data is lost after container is restarted
+  mariadb:
+    image: library/mariadb:10.6
+    container_name: mariadb-ram
+    restart: unless-stopped
+    profiles:
+      - all
+      - mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Europe/Bucharest
+    ports:
+      - 3307:3306
+    tmpfs:
+      - /var/lib/mysql
+    volumes:
+      - ./mariadb/mariadb.cnf:/etc/mysql/mariadb.cnf
+      - ./mariadb/my.cnf:/etc/mysql/my.cnf
+      - ./mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      -  ramdisk:/var/lib/mysql:rw
+    networks:
+      customnetwork:
+        ipv4_address: 192.168.10.8
+
+  # Apache Tomcat 7 server
+  # For Java web apps
+  tomcat7:
+    image: tomcat:7-jre8
+    container_name: tomcat7
+    profiles:
+      - all
+      - tomcat
+    ports:
+      - 8080:8080
+    networks:
+      customnetwork:
+        ipv4_address: 192.168.10.6
+
+  # Varnish server
+  varnish:
+    image: million12/varnish
+    container_name: varnish
+    restart: unless-stopped
+    profiles:
+      - all
+      - varnish
+    volumes:
+      - ./varnish/secret:/etc/varnish/secret
+      - ./varnish/drupal8-ozone.vcl:/etc/varnish/default.vcl
+    environment:
+      VARNISHD_PARAMS: "-p http_max_hdr=512 -p http_resp_hdr_len=1024768 -p http_resp_size=3024768 -p thread_pool_min=200 -p thread_pool_max=500 -p http_req_size=64000"
+    ports:
+      - 6081:80
+      # Management port
+      # - "0.0.0.0:6082:6082"
+    networks:
+      customnetwork:
+        ipv4_address: 192.168.10.7
+
+volumes:
+ ramdisk:
+   driver_opts:
+     type: tmpfs
+     device: tmpfs
+
+networks:
+  customnetwork:
+    ipam:
+      config:
+        - subnet: 192.168.10.1/16

@@ -1,0 +1,14 @@
+services:
+  
+  # Development SMTP server with webmail
+  # Email interface accessible via http://localhost:8025
+  tomcat7:
+    volumes:
+      - /home/cristiroma/Work/holcim/pdf-remote-sign/target/pdf-remote-sign-0.0.1-SNAPSHOT.war:/usr/local/tomcat/webapps/pdf-remote-sign.war
+      - /home/cristiroma/Work/holcim/pdf-remote-sign:/home/cristiroma/Projects/holcim/pdf-remote-sign
+      - /home/cristiroma/Work/holcim/pdf-service/target/pdf-service.war:/usr/local/tomcat/webapps/pdf-service.war
+      - /home/cristiroma/Work/holcim/pdf-service/util/mysql-connector-java-5.1.29-bin.jar:/usr/local/tomcat/lib/mysql-connector-java-5.1.29-bin.jar
+      - /home/cristiroma/Work/holcim/eholcim/web/sites/default/files/private/cert-trusted:/eholcim-cert-trusted
+      - /home/cristiroma/Work/holcim/eholcim/web/sites/default/files/private/secure-store/cert-new:/eholcim-secure-store-cert-new
+      - /home/cristiroma/Work/holcim/eholcim/web/sites/default/files/private/secure-store/temp:/eholcim-secure-store-temp
+      - /home/cristiroma/Work/holcim/eholcim/web/sites/default/files/private/pdf-templates:/eholcim-pdf-templates

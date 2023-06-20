@@ -1,5 +1,5 @@
-docker-compose.override.yml
-mariadb/docker-entrypoint-initdb.d/*.sql
-solr/**/cores/
-solr/**/home/
-solr/**/temp/
+override.yml
+data/docker-entrypoint-initdb.d/*.sql
+data/solr/**/cores/
+data/solr/**/home/
+data/solr/**/temp/
