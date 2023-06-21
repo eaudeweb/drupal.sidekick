@@ -21,7 +21,7 @@ sudo chown -R 8983:8983 /opt/host.containers/data/solr
 
 3. Customize services
 
-You can copy `example.override.yml` to `override.yml` and customize it to your needs. Keep in mind that you can fully override: `volumes`, `ports` and other aspects of service definition. Read more (here)[https://docs.docker.com/compose/compose-file/03-compose-file/] and (here)[https://docs.docker.com/compose/compose-file/13-merge/].
+You can copy `example.override.yml` to `override.yml` and customize it to your needs. Keep in mind that you can fully override: `volumes` and other aspects of service definition (either through `override.yml` OR `.env` file) Read more (here)[https://docs.docker.com/compose/compose-file/03-compose-file/] and (here)[https://docs.docker.com/compose/compose-file/13-merge/].
 
 4. Start the services
 
@@ -43,9 +43,9 @@ Enabling and disabling services: By default there is only a single service enabl
 
 ### MailHog
 
-The MailHog service creates a SMTP local server to send emails and receive emails. It does not send real emails and therefore if it runs locally on port `25` - it avoids sending real emails when doing local mailing tests. All emails sent can be seen in an Webmail UI available at http://localhost:8025.
+**Description**: The MailHog service creates a SMTP local server to send emails and receive emails. It does not send real emails and therefore if it runs locally on port `25` - it avoids sending real emails when doing local mailing tests. All emails sent can be seen in an Webmail UI available at http://localhost:8025.
 
-Make sure you stop your sendmail if you decide to run it on port `25`:
+**Warning**: Make sure you stop your sendmail if you decide to run it on port `25`:
 
 ```bash
 systemctl stop sendmail
@@ -53,6 +53,18 @@ systemctl disable sendmail
 systemctl stop postfix
 systemctl disable postfix
 ```
+
+**Configuration**:
+
+- You can change the default listening ports locally by adding environment variables in an `.env` file in this folder.
+
+Example:
+
+```
+MAILHOG_SMTP_PORT=1025
+MAILHOG_HTTP_PORT=8000
+```
+
 
 ### Apache Solr
 

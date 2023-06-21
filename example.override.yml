@@ -1,5 +1,22 @@
+# Sample customizations for services
 services:
-  
+
+  mailhog:
+    # Override container name
+    container_name: mailhog_1
+    restart: no
+
+  solr8:
+    # Adjust solr memory
+    environment:
+      SOLR_JAVA_MEM: "-Xms512m -Xmx8g"
+
+  mariadb:
+    # Add more configuration volumes
+    volumes:
+      - ./conf/mariadb/mariadb.cnf:/etc/mysql/mariadb.cnf
+      - ./conf/mariadb/my.cnf:/etc/mysql/my.cnf
+
   # Development SMTP server with webmail
   # Email interface accessible via http://localhost:8025
   tomcat7:
