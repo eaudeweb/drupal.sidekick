@@ -1,4 +1,6 @@
-# Developer workstation
+# Drupal SideKick
+
+`Your Drupal development buddy`(tm)
 
 ## Setup
 
@@ -25,9 +27,10 @@ You can copy `example.override.yml` to `override.yml` and customize it to your n
 
 Example commands:
 
-1. Start the default services: `sudo ./service.sh start`
-2. Start Solr services: `sudo ./service.sh --profile solr start`
-3. Stop services: `sudo ./service.sh --profile solr stop` (use the same profile to close all services)
+1. Start the default services: `sudo ./service.sh up`
+1. Start the default services without blocking the console: `sudo ./service.sh up -d`
+1. Start Solr services: `sudo ./service.sh --profile solr up`
+1. Stop services: `sudo ./service.sh --profile solr stop` (use the same profile to close all services)
 
 ## Services
 

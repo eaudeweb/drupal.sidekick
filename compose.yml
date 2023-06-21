@@ -8,11 +8,15 @@ services:
     restart: unless-stopped
     ports:
       # Set to port 25 replaces local sendmail (and avoid spamming people)
-      - 25:1025
-      - 8025:8025
+      # You can override these variables in .env
+      - ${MAILHOG_SMTP_PORT:-25}:1025
+      - ${MAILHOG_HTTP_PORT:-8025}:8025
     networks:
       customnetwork:
         ipv4_address: 192.168.10.3
+
+## Optional services
+## Use --profile to launch
 
 # Full-text search solr 8 server
 # version 8 is the latest supported by Drupal
@@ -27,7 +31,8 @@ services:
     volumes:
       - ./data/solr/8/cores:/var/solr/data
     ports:
-      - 8983:8983
+      # You can override this variable in .env
+      - ${SOLR8_HTTP_PORT:-8983}:8983
     environment:
       SOLR_JAVA_MEM: "-Xms512m -Xmx3g"
     logging:
@@ -37,10 +42,6 @@ services:
     networks:
       customnetwork:
         ipv4_address: 192.168.10.5
-
-
-  ## Optional services
-  ## Use --profile to launch
 
   # Full-text search solr 7 server
   # For older Drupal projects
@@ -55,7 +56,8 @@ services:
       - ./data/solr/7/cores:/opt/solr/server/solr/cores
       - ./data/solr/7/home:/home/solr
     ports:
-      - 8984:8983
+      # You can override this variable in .env
+      - ${SOLR7_HTTP_PORT:-8984}:8983
     environment:
       SOLR_JAVA_MEM: "-Xms512m -Xmx2g"
     logging:
@@ -80,7 +82,8 @@ services:
       MYSQL_ROOT_PASSWORD: root
       TZ: Europe/Bucharest
     ports:
-      - 3307:3306
+      # You can override this variable in .env
+      - ${MARIADB_PORT:-3307}:3306
     tmpfs:
       - /var/lib/mysql
     volumes:
@@ -101,7 +104,8 @@ services:
       - all
       - tomcat
     ports:
-      - 8080:8080
+      # You can override this variable in .env
+      - ${TOMCAT7_PORT:-8080}:8080
     networks:
       customnetwork:
         ipv4_address: 192.168.10.6
@@ -120,7 +124,8 @@ services:
     environment:
       VARNISHD_PARAMS: "-p http_max_hdr=512 -p http_resp_hdr_len=1024768 -p http_resp_size=3024768 -p thread_pool_min=200 -p thread_pool_max=500 -p http_req_size=64000"
     ports:
-      - 6081:80
+      # You can override this variable in .env
+      - ${MARIADB_PORT:-6081}:80
       # Management port
       # - "0.0.0.0:6082:6082"
     networks:

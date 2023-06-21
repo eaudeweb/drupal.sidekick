@@ -1,3 +1,4 @@
+.env
 override.yml
 data/docker-entrypoint-initdb.d/*.sql
 data/solr/**/cores/
