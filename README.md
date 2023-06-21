@@ -21,7 +21,7 @@ sudo chown -R 8983:8983 /opt/host.containers/data/solr
 
 3. Customize services
 
-You can copy `example.override.yml` to `override.yml` and customize it to your needs. Keep in mind that you can fully override: `volumes` and other aspects of service definition (either through `override.yml` OR `.env` file) Read more (here)[https://docs.docker.com/compose/compose-file/03-compose-file/] and (here)[https://docs.docker.com/compose/compose-file/13-merge/].
+You can copy `example.override.yml` to `override.yml` and customize it to your needs. Keep in mind that you can fully override: `volumes` and other aspects of service definition (either through `override.yml` OR `.env` file) Read more [here](https://docs.docker.com/compose/compose-file/03-compose-file/) and [here](https://docs.docker.com/compose/compose-file/13-merge/).
 
 4. Start the services
 
