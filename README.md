@@ -10,13 +10,13 @@ Follow-up on the official documentaiton how to get the latest Docker version for
 
 2. Clone this repository locally
 
-Clone this repository somewhere on your computer, preferably on: `/opt/host.containers`
+Clone this repository somewhere on your computer, preferably on: `/opt/sidekick`
 
 ```bash
-sudo mkdir /opt/host.containers
-sudo chown <USER>:<USER> /opt/host.containers
-git clone https://github.com/eaudeweb/host.containers /opt/host.containers
-sudo chown -R 8983:8983 /opt/host.containers/data/solr
+sudo mkdir /opt/sidekick
+sudo chown <USER>:<USER> /opt/sidekick
+git clone https://github.com/eaudeweb/sidekick /opt/sidekick
+sudo chown -R 8983:8983 /opt/sidekick/data/solr
 ```
 
 3. Customize services
@@ -76,14 +76,14 @@ See below commands to create a new core. Replace `NEWCORENAME` with the actual n
 
 ```bash
 sudo su -
-cd /opt/host.containers/data/solr/7/cores/
+cd /opt/sidekick/data/solr/7/cores/
 mkdir -p NEWCORENAME/conf
-cd /opt/host.containers/data/solr/7/cores/NEWCORENAME/conf/
-touch /opt/host.containers/data/solr/7/cores/NEWCORENAME/core.properties
+cd /opt/sidekick/data/solr/7/cores/NEWCORENAME/conf/
+touch /opt/sidekick/data/solr/7/cores/NEWCORENAME/core.properties
 # Download and copy Drupal core template from http://drupal.localhost/admin/config/search/search-api/server/solr/solr_configset/config-zip (solr_x.y_config.zip) to conf/
 cp ~/Desktop/solr_7.x_config.zip .
 unzip solr_7.x_config.zip
-sudo chown -R 8983:8983 /opt/host.containers/data/solr/7/cores/NEWCORENAME
+sudo chown -R 8983:8983 /opt/sidekick/data/solr/7/cores/NEWCORENAME
 docker compose restart solr7
 ```
 
