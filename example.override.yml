@@ -14,8 +14,7 @@ services:
   mariadb:
     # Add more configuration volumes
     volumes:
-      - ./conf/mariadb/mariadb.cnf:/etc/mysql/mariadb.cnf
-      - ./conf/mariadb/my.cnf:/etc/mysql/my.cnf
+      - ./conf/mariadb/drupal.cnf:/etc/mysql/mariadb.conf.d/70-drupal.cnf
 
   # Development SMTP server with webmail
   # Email interface accessible via http://localhost:8025

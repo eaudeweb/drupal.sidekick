@@ -93,6 +93,13 @@ docker compose restart solr7
 
 **Configuration**: See examples in `example.override.yml` to customize MariaDB configuration options by mounting additional `.cnf` files
 
+**Populate database with data**: If you place SQL scripts in the `./data/mariadb/` directory they are always executed during server startup. Therefore you can place database dumps but they must start with database creation and selection statements like this:
+
+```SQL
+CREATE DATABASE project_db CHARACTER SET UTF8MB4;
+USE project_db;
+```
+
 ### Apache Tomcat
 
 **Description**: Apache Tomcat 7 container for Java Web applications.
