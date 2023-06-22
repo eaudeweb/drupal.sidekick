@@ -29,3 +29,8 @@ services:
       - /home/cristiroma/Work/holcim/eholcim/web/sites/default/files/private/secure-store/cert-new:/eholcim-secure-store-cert-new
       - /home/cristiroma/Work/holcim/eholcim/web/sites/default/files/private/secure-store/temp:/eholcim-secure-store-temp
       - /home/cristiroma/Work/holcim/eholcim/web/sites/default/files/private/pdf-templates:/eholcim-pdf-templates
+
+
+  varnish:
+    volumes:
+      - ./varnish/drupal8-ozone.vcl:/etc/varnish/default.vcl

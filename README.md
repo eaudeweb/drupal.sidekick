@@ -1,6 +1,6 @@
 # Drupal SideKick
 
-`Your Drupal development buddy`(tm)
+`Your Drupal development buddy`
 
 ## Setup
 
@@ -34,8 +34,9 @@ Example commands:
 
 ## Services
 
-Enabling and disabling services: By default there is only a single service enabled: `MailHog`. In the sections below, each service is described in detail. If you want to use a certain service you can use profiles. The following profiles are defined:
+Enabling and disabling services: By default there is only a single service enabled: `MailHog`. In the sections below, each service is described in detail. If you want to use a certain service you can use the `--profile` switch. The following profiles are defined:
 
+- `all` - Start all available services
 - `solr` - Start Apache Solr servers
 - `mariadb` - Start MariaDB servers
 - `tomcat` - Start Tomcat servlet container
@@ -65,7 +66,6 @@ MAILHOG_SMTP_PORT=1025
 MAILHOG_HTTP_PORT=8000
 ```
 
-
 ### Apache Solr
 
 These services are listening on local TCP/IP ports `8983` and `8984`. Make sure there is no conflict with other services. Below are instructions how to manage Solr cores.
@@ -86,6 +86,22 @@ unzip solr_7.x_config.zip
 sudo chown -R 8983:8983 /opt/host.containers/data/solr/7/cores/NEWCORENAME
 docker compose restart solr7
 ```
+
+### MariaDB
+
+**Description**: MariaDB with in-memory storage for very fast queries. All database data is stored in tmpfs and therefore lost when the container is restarted.
+
+**Configuration**: See examples in `example.override.yml` to customize MariaDB configuration options by mounting additional `.cnf` files
+
+### Apache Tomcat
+
+**Description**: Apache Tomcat 7 container for Java Web applications.
+
+### Varnish
+
+**Description**: Varnish for implementing caching strategy for projects.
+
+**Configuration**: You can mount custom VCL files, see `exampl`
 
 ## FAQ
 

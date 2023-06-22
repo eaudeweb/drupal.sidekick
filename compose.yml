@@ -87,7 +87,7 @@ services:
     tmpfs:
       - /var/lib/mysql
     volumes:
-      - ./mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./data/mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       -  ramdisk:/var/lib/mysql:rw
     networks:
       customnetwork:
@@ -117,13 +117,12 @@ services:
       - all
       - varnish
     volumes:
-      - ./varnish/secret:/etc/varnish/secret
-      - ./varnish/drupal8-ozone.vcl:/etc/varnish/default.vcl
+      - ./conf/varnish/secret:/etc/varnish/secret
     environment:
       VARNISHD_PARAMS: "-p http_max_hdr=512 -p http_resp_hdr_len=1024768 -p http_resp_size=3024768 -p thread_pool_min=200 -p thread_pool_max=500 -p http_req_size=64000"
     ports:
       # You can override this variable in .env
-      - ${MARIADB_PORT:-6081}:80
+      - ${VARNISH_PORT:-6081}:80
       # Management port
       # - "0.0.0.0:6082:6082"
     networks:
