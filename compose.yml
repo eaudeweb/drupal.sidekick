@@ -87,6 +87,7 @@ services:
     tmpfs:
       - /var/lib/mysql
     volumes:
+      - ./conf/mariadb/passwd:/root/.my.cnf
       - ./data/mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       -  ramdisk:/var/lib/mysql:rw
     networks:
