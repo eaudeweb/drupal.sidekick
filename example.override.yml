@@ -11,6 +11,11 @@ services:
     environment:
       SOLR_JAVA_MEM: "-Xms512m -Xmx8g"
 
+  # Disable service
+  solr7:
+    restart: no
+    entrypoint: /bin/true
+
   mariadb:
     # Add more configuration volumes
     volumes:
