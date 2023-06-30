@@ -4,3 +4,5 @@ data/mariadb/*.sql
 data/solr/**/cores/
 data/solr/**/home/
 data/solr/**/temp/
+start.sh
+stop.sh
