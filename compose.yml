@@ -13,7 +13,7 @@ services:
       - ${MAILHOG_HTTP_PORT:-8025}:8025
     networks:
       customnetwork:
-        ipv4_address: 192.168.10.3
+        ipv4_address: 192.168.133.3
 
 ## Optional services
 ## Use --profile to launch
@@ -27,6 +27,7 @@ services:
     restart: unless-stopped
     profiles:
       - all
+      - drupal
       - solr
     volumes:
       - ./data/solr/8/cores:/var/solr/data
@@ -41,32 +42,7 @@ services:
         max-file: "3"
     networks:
       customnetwork:
-        ipv4_address: 192.168.10.5
-
-  # Full-text search solr 7 server
-  # For older Drupal projects
-  solr7:
-    image: library/solr:7
-    container_name: solr7
-    restart: unless-stopped
-    profiles:
-      - all
-      - solr
-    volumes:
-      - ./data/solr/7/cores:/opt/solr/server/solr/cores
-      - ./data/solr/7/home:/home/solr
-    ports:
-      # You can override this variable in .env
-      - ${SOLR7_HTTP_PORT:-8984}:8983
-    environment:
-      SOLR_JAVA_MEM: "-Xms512m -Xmx2g"
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    networks:
-      customnetwork:
-        ipv4_address: 192.168.10.4
+        ipv4_address: 192.168.133.5
 
   # MariaDB SQL server
   # Features disk stored in RAM to speed-up everything
@@ -77,6 +53,7 @@ services:
     restart: unless-stopped
     profiles:
       - all
+      - drupal
       - mariadb
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -92,7 +69,33 @@ services:
       -  ramdisk:/var/lib/mysql:rw
     networks:
       customnetwork:
-        ipv4_address: 192.168.10.8
+        ipv4_address: 192.168.133.8
+
+  # MariaDB SQL server
+  # Features disk stored in RAM to speed-up everything
+  # WARNING: All data is lost after container is restarted
+  mysql:
+    image: library/mysql:8
+    container_name: mysql
+    restart: unless-stopped
+    profiles:
+      - all
+      - drupal
+      - mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Europe/Bucharest
+    ports:
+      # You can override this variable in .env
+      - ${MARIADB_PORT:-3308}:3306
+    volumes:
+      - ./conf/mariadb/passwd:/root/.my.cnf
+      - ./conf/mariadb/drupal.cnf:/etc/mysql/conf.d/drupal.cnf
+      - ./data/mariadb:/docker-entrypoint-initdb.d
+#      - ramdisk:/var/lib/mysql:rw
+    networks:
+      customnetwork:
+        ipv4_address: 192.168.133.9
 
   # Apache Tomcat 7 server
   # For Java web apps
@@ -107,7 +110,7 @@ services:
       - ${TOMCAT7_PORT:-8080}:8080
     networks:
       customnetwork:
-        ipv4_address: 192.168.10.6
+        ipv4_address: 192.168.133.6
 
   # Varnish server
   varnish:
@@ -116,6 +119,7 @@ services:
     restart: unless-stopped
     profiles:
       - all
+      - drupal
       - varnish
     volumes:
       - ./conf/varnish/secret:/etc/varnish/secret
@@ -128,7 +132,7 @@ services:
       # - "0.0.0.0:6082:6082"
     networks:
       customnetwork:
-        ipv4_address: 192.168.10.7
+        ipv4_address: 192.168.133.7
 
 volumes:
  ramdisk:
@@ -140,4 +144,4 @@ networks:
   customnetwork:
     ipam:
       config:
-        - subnet: 192.168.10.1/16
+        - subnet: 192.168.133.0/24

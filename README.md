@@ -6,7 +6,7 @@
 
 1. Install Docker
 
-Follow-up on the official documentaiton how to get the latest Docker version for your platform - https://docs.docker.com/get-docker/
+Follow-up on the official documentation how to get the latest Docker version for your platform - https://docs.docker.com/get-docker/
 
 2. Clone this repository locally
 
