@@ -1,6 +1,9 @@
 [client]
 default-character-set = utf8mb4
 
+[mysql]
+default-character-set = utf8mb4
+
 #
 # These groups are read by MariaDB server.
 
@@ -11,6 +14,7 @@ default-character-set = utf8mb4
 
 [mysqld]
 character-set-server    = utf8mb4
+collation_server        = utf8mb4_unicode_ci
 max_connections         = 25
 connect_timeout         = 5
 wait_timeout            = 600

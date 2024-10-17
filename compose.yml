@@ -64,6 +64,7 @@ services:
     #  - /var/lib/mysql
     volumes:
       - ./conf/mariadb/passwd:/root/.my.cnf
+      - ./conf/mariadb/drupal.cnf:/etc/mysql/conf.d/90-drupal.cnf
       - ./data/mariadb/init:/docker-entrypoint-initdb.d
       - mariadb-data:/var/lib/mysql
       # -  ramdisk:/var/lib/mysql:rw
@@ -85,6 +86,25 @@ services:
     networks:
       customnetwork:
         ipv4_address: 192.168.133.6
+
+  # Redis server
+  redis:
+    image: redis:8.0-M01
+    container_name: redis
+    restart: unless-stopped
+    profiles:
+      - all
+      - drupal
+      - varnish
+    volumes:
+      - redis-cache:/data
+      - ./conf/redis/redis.conf:/usr/local/redis.conf
+    entrypoint: redis-server /usr/local/redis.conf
+    ports:
+      - ${REDIS_PORT:-6379}:6379
+    networks:
+      customnetwork:
+        ipv4_address: 192.168.133.9
 
   # Varnish server
   varnish:
@@ -111,6 +131,7 @@ services:
 volumes:
   solr8-cores:
   mariadb-data:
+  redis-cache:
 # ramdisk:
 #   driver_opts:
 #     type: tmpfs
