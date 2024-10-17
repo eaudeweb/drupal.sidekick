@@ -1,3 +1,3 @@
 #!/bin/env bash
 
-./service.sh --profile solr up
+./service.sh --profile drupal up

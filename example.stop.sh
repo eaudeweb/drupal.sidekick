@@ -1,3 +1,3 @@
 #!/bin/env bash
 
-./service.sh --profile solr stop
+./service.sh --profile drupal stop
