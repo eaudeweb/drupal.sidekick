@@ -87,7 +87,6 @@ services:
       customnetwork:
         ipv4_address: 192.168.133.6
 
-  # Redis server
   redis:
     image: redis:8.0-M01
     container_name: redis
@@ -105,6 +104,24 @@ services:
     networks:
       customnetwork:
         ipv4_address: 192.168.133.9
+
+  memcached:
+    image: memcached:1.6-alpine
+    container_name: memcached
+    restart: unless-stopped
+    profiles:
+      - all
+      - drupal
+      - varnish
+    command:
+      - --conn-limit=1024
+      - --memory-limit=512
+      - --threads=4
+    ports:
+      - ${REDIS_PORT:-11211}:11211
+    networks:
+      customnetwork:
+        ipv4_address: 192.168.133.10
 
   # Varnish server
   varnish:
