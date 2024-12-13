@@ -10,8 +10,8 @@ acl upstream_proxy {
 
 # Default backend definition. Set this to point to your content server.
 backend appserver {
-    .host = "172.18.0.1";
-    .port = "8081";
+    .host = "host.docker.internal";
+    .port = "8080";
     .connect_timeout = 300s;
     .between_bytes_timeout = 300s;
     .first_byte_timeout = 300s;
@@ -28,11 +28,7 @@ backend appserver {
 
 acl purge {
     "localhost";
-    "127.0.0.1";
-    "54.246.114.83";
-    "172.18.0.3";
-    "worldheritageoutlook.iucn.org";
-    "www.worldheritageoutlook.iucn.org";
+    "host.docker.internal";
 }
 
 sub vcl_init {
