@@ -29,6 +29,7 @@ backend appserver {
 acl purge {
     "localhost";
     "host.docker.internal";
+    "192.168.133.0/24";
 }
 
 sub vcl_init {

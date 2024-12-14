@@ -136,8 +136,6 @@ services:
       - ./conf/varnish/secret:/etc/varnish/secret
       - ./conf/varnish/varnish.params:/etc/varnish/varnish.params
       - ./conf/varnish/drupal.vcl:/etc/varnish/default.vcl
-    environment:
-      VARNISHD_PARAMS: "-p http_max_hdr=512 -p http_resp_hdr_len=1024768 -p http_resp_size=3024768 -p thread_pool_min=200 -p thread_pool_max=500 -p http_req_size=64000"
     ports:
       # You can override this variable in .env
       - ${VARNISH_PORT:-6081}:80
