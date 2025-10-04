@@ -12,7 +12,7 @@ services:
       - ${MAILHOG_SMTP_PORT:-25}:1025
       - ${MAILHOG_HTTP_PORT:-8025}:8025
     networks:
-      customnetwork:
+      int:
         ipv4_address: 192.168.133.3
 
 ## Optional services
@@ -30,7 +30,7 @@ services:
       - drupal
       - solr
     volumes:
-      - solr8-cores:/var/solr
+      - ./data/solr/8/cores:/var/solr/data/cores
     ports:
       # You can override this variable in .env
       - ${SOLR8_HTTP_PORT:-8983}:8983
@@ -41,7 +41,7 @@ services:
         max-size: "10m"
         max-file: "3"
     networks:
-      customnetwork:
+      int:
         ipv4_address: 192.168.133.5
 
   # MariaDB SQL server
@@ -54,12 +54,12 @@ services:
       - drupal
       - mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: root
       MARIADB_ROOT_PASSWORD: root
+      MARIADB_AUTO_UPGRADE: 1
       TZ: Europe/Bucharest
     ports:
       # You can override this variable in .env
-      - ${MARIADB_PORT:-3306}:3306
+      - 127.0.0.1:${MARIADB_PORT:-3306}:3306
     #tmpfs:
     #  - /var/lib/mysql
     volumes:
@@ -69,7 +69,7 @@ services:
       - mariadb-data:/var/lib/mysql
       # -  ramdisk:/var/lib/mysql:rw
     networks:
-      customnetwork:
+      int:
         ipv4_address: 192.168.133.8
 
   # Apache Tomcat 7 server
@@ -84,7 +84,7 @@ services:
       # You can override this variable in .env
       - ${TOMCAT7_PORT:-8080}:8080
     networks:
-      customnetwork:
+      int:
         ipv4_address: 192.168.133.6
 
   redis:
@@ -102,7 +102,7 @@ services:
     ports:
       - ${REDIS_PORT:-6379}:6379
     networks:
-      customnetwork:
+      int:
         ipv4_address: 192.168.133.9
 
   memcached:
@@ -120,7 +120,7 @@ services:
     ports:
       - ${REDIS_PORT:-11211}:11211
     networks:
-      customnetwork:
+      int:
         ipv4_address: 192.168.133.10
 
   # Varnish server
@@ -142,11 +142,10 @@ services:
       # Management port
       # - "0.0.0.0:6082:6082"
     networks:
-      customnetwork:
+      int:
         ipv4_address: 192.168.133.7
 
 volumes:
-  solr8-cores:
   mariadb-data:
   redis-cache:
 # ramdisk:
@@ -155,7 +154,7 @@ volumes:
 #     device: tmpfs
 
 networks:
-  customnetwork:
+  int:
     ipam:
       config:
         - subnet: 192.168.133.0/24

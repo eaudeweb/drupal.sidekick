@@ -10,7 +10,7 @@ acl upstream_proxy {
 
 # Default backend definition. Set this to point to your content server.
 backend appserver {
-    .host = "host.docker.internal";
+    .host = "172.17.0.1";
     .port = "8080";
     .connect_timeout = 300s;
     .between_bytes_timeout = 300s;
@@ -28,7 +28,7 @@ backend appserver {
 
 acl purge {
     "localhost";
-    "host.docker.internal";
+    "172.17.0.1";
     "192.168.133.0/24";
 }
 
