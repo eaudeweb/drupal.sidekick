@@ -2,15 +2,15 @@ services:
   
   # Development SMTP server with webmail
   # Email interface accessible via http://localhost:8025
-  mailhog:
-    image: mailhog/mailhog
-    container_name: mailhog
+  mail:
+    image: axllent/mailpit
+    container_name: mail
     restart: unless-stopped
     ports:
       # Set to port 25 replaces local sendmail (and avoid spamming people)
       # You can override these variables in .env
-      - ${MAILHOG_SMTP_PORT:-25}:1025
-      - ${MAILHOG_HTTP_PORT:-8025}:8025
+      - 127.0.0.1:${MAIL_SMTP_PORT:-25}:1025
+      - 127.0.0.1:${MAIL_HTTP_PORT:-8025}:8025
     networks:
       int:
         ipv4_address: 192.168.133.3
@@ -33,7 +33,7 @@ services:
       - ./data/solr/8/cores:/var/solr/data/cores
     ports:
       # You can override this variable in .env
-      - ${SOLR8_HTTP_PORT:-8983}:8983
+      - 127.0.0.1:${SOLR8_HTTP_PORT:-8983}:8983
     environment:
       SOLR_JAVA_MEM: "-Xms512m -Xmx3g"
     logging:
@@ -82,7 +82,7 @@ services:
       - tomcat
     ports:
       # You can override this variable in .env
-      - ${TOMCAT7_PORT:-8080}:8080
+      - 127.0.0.1:${TOMCAT7_PORT:-8080}:8080
     networks:
       int:
         ipv4_address: 192.168.133.6
@@ -100,7 +100,7 @@ services:
       - ./conf/redis/redis.conf:/usr/local/redis.conf
     entrypoint: redis-server /usr/local/redis.conf
     ports:
-      - ${REDIS_PORT:-6379}:6379
+      - 127.0.0.1:${REDIS_PORT:-6379}:6379
     networks:
       int:
         ipv4_address: 192.168.133.9
@@ -118,7 +118,7 @@ services:
       - --memory-limit=512
       - --threads=4
     ports:
-      - ${REDIS_PORT:-11211}:11211
+      - 127.0.0.1:${REDIS_PORT:-11211}:11211
     networks:
       int:
         ipv4_address: 192.168.133.10
@@ -138,7 +138,7 @@ services:
       - ./conf/varnish/drupal.vcl:/etc/varnish/default.vcl
     ports:
       # You can override this variable in .env
-      - ${VARNISH_PORT:-6081}:80
+      - 127.0.0.1:${VARNISH_PORT:-6081}:80
       # Management port
       # - "0.0.0.0:6082:6082"
     networks:
