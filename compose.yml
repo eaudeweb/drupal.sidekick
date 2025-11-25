@@ -60,17 +60,44 @@ services:
     ports:
       # You can override this variable in .env
       - 127.0.0.1:${MARIADB_PORT:-3306}:3306
-    #tmpfs:
-    #  - /var/lib/mysql
     volumes:
       - ./conf/mariadb/passwd:/root/.my.cnf
       - ./conf/mariadb/drupal.cnf:/etc/mysql/conf.d/90-drupal.cnf
       - ./data/mariadb/init:/docker-entrypoint-initdb.d
       - mariadb-data:/var/lib/mysql
-      # -  ramdisk:/var/lib/mysql:rw
     networks:
       int:
         ipv4_address: 192.168.133.8
+
+  # MariaDB SQL server
+  mariadb_ram:
+    image: library/mariadb:10.6
+    container_name: mariadb_ram
+    restart: unless-stopped
+    profiles:
+      - all
+      - drupal
+      - mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_AUTO_UPGRADE: 1
+      TZ: Europe/Bucharest
+    ports:
+      # You can override this variable in .env
+      - 127.0.0.1:${MARIADB_RAM_PORT:-3307}:3306
+    #tmpfs:
+    #  - /var/lib/mysql
+    volumes:
+      - ./conf/mariadb/passwd:/root/.my.cnf
+      - ./conf/mariadb/drupal.cnf:/etc/mysql/conf.d/90-drupal.cnf
+      - ./conf/mariadb_ram/:/docker-entrypoint-initdb.d
+      - mariadb-data:/var/lib/mysql
+      - ramdisk:/var/lib/mysql:rw
+    networks:
+      int:
+        ipv4_address: 192.168.133.12
+
+
 
   # Apache Tomcat 7 server
   # For Java web apps
@@ -143,15 +170,15 @@ services:
       # - "0.0.0.0:6082:6082"
     networks:
       int:
-        ipv4_address: 192.168.133.7
+        ipv4_address: 192.168.133.11
 
 volumes:
   mariadb-data:
   redis-cache:
-# ramdisk:
-#   driver_opts:
-#     type: tmpfs
-#     device: tmpfs
+  ramdisk:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
 
 networks:
   int:
